@@ -1,6 +1,12 @@
 <template>
   <div>
-    <input v-model="searchQuery" placeholder="Enter a meal name" />
+    <el-input
+      v-model="searchQuery"
+      class="w-50 m-2"
+      size="small"
+      placeholder="Please Input"
+      :prefix-icon="Search"
+    />
     <button @click="searchMeals">Search</button>
   </div>
 </template>

@@ -1,47 +1,43 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div id="app">
+    <h1>Meal Search App</h1>
+    <SearchBar @search="searchMeals" />
+    <MealList v-if="meals.length" :meals="meals" />
+    <div v-if="error">
+      <p>{{ error }}</p>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
+<script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import SearchBar from "@/components/SearchBar.vue";
+import MealList from "@/components/MealList.vue";
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+const meals = ref([]);
+const error = ref(null);
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+const searchMeals = (searchQuery) => {
+  try {
+    axios
+      .get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`)
+      .then((response) => {
+        meals.value = response.data.meals;
+      });
+  } catch (err) {
+    error.value = err.message;
   }
+};
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+onMounted(() => {
+  searchMeals("");
+});
+</script>
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+<style>
+#app {
+  text-align: center;
+  margin-top: 60px;
 }
 </style>

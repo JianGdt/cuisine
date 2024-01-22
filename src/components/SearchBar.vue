@@ -29,7 +29,6 @@ const searchMeals = () => {
 </script>
 
 <style scoped lang="scss">
-
 .search-bar {
   display: flex;
   align-items: center;

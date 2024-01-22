@@ -9,6 +9,14 @@
     }
   ],
   "compilerOptions": {
-    "types": ["element-plus/global"]
-  }
+    "types": ["element-plus/global"],
+    "target": "esnext", 
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "lib": ["dom", "esnext", "es2015.promise"],
+  },
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/composables/**/*.ts", "src/**/*.ts", ],
 }

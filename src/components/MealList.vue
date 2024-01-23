@@ -1,12 +1,19 @@
 <template>
-  <div>
+  <div class="p-12">
+    <BackButton/>
     <h2>Results:</h2>
+    <div v-if="displayedMeals.length === 0">No results found.</div>
     <div>
       <label for="search">Search by Name:</label>
       <el-input v-model="searchQuery" @input="searchMealsByName" :prefix-icon="Search"/>
     </div>
     <ul>
-      <li v-for="meal in displayedMeals" :key="meal.idMeal">{{ meal.strMeal }}</li>
+      <li v-for="meal in displayedMeals" :key="meal.idMeal">
+        <span>
+          {{ meal.strMeal }}
+        </span>
+        <img :src="meal.strMealThumb" :alt="meal.strMeal" class="object-cover w-2/12 cursor-pointer"/>
+      </li>
     </ul>
   </div>
 </template>
@@ -18,7 +25,8 @@ import { Search } from '@element-plus/icons-vue';
 type Meal = {
   idMeal: string;
   strMeal: string;
-}
+  strMealThumb: string;
+};
 
 const props = defineProps<{
   meals: Meal[];
@@ -52,15 +60,14 @@ const filterMeals = () => {
 const searchMealsByName = () => {
   displayedMeals.value = filterMeals();
 };
-
 </script>
 
 <style scoped lang="scss">
-ul {
-  list-style-type: none;
-  padding: 0;
-  li {
-    margin-bottom: 10px;
+  ul {
+    list-style-type: none;
+    padding: 0;
+    li {
+      margin-bottom: 10px;
+    }
   }
-}
 </style>

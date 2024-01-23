@@ -1,32 +1,16 @@
 <template>
   <main class="w-full">
-    <h1>Meal Search App</h1>
-    <MealCategoryList :categories="categories" @selectCategory="selectCategory" />
-    <MealList v-if="meals.length" :meals="meals" />
-    <div v-if="error">
-      <p>{{ error }}</p>
-    </div>
+    <MealCategoryList v-if="isRootPath" :categories="categories" @selectCategory="selectCategory" />
+    <router-view v-if="!isRootPath" :meals="meals" />
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
-type Meal = {
-  idMeal: string;
-  strMeal: string;
-};
-
-type Category = {
-  idCategory: string;
-  strCategory: string;
-};
-
-const meals = ref<Meal[]>([]);
-const error = ref<string | null>(null);
-const categories = ref<Category[]>([]);
-const selectedCategory = ref<string | null>(null);
+const router = useRouter();
 
 const fetchCategories = () => {
   const url = 'https://www.themealdb.com/api/json/v1/1/categories.php';
@@ -35,7 +19,7 @@ const fetchCategories = () => {
   });
 };
 
-const searchMeals = () => {
+const searchMeals = (error: any) => {
   if (!selectedCategory.value) {
     error.value = 'Please select a category.';
     return;
@@ -53,12 +37,22 @@ const searchMeals = () => {
     });
 };
 
+const meals = ref([]);
+const error = ref(null);
+const categories = ref([]);
+const selectedCategory = ref<string | null>(null);
+
 const selectCategory = (category: string) => {
   selectedCategory.value = category;
-  searchMeals();
+  searchMeals(error);
+  router.push({ name: 'MealList', params: { category } });
 };
 
-// Fetch categories on component mount
+const isRootPath = ref(true);
+watch(() => router.currentRoute.value.path, (path) => {
+  isRootPath.value = path === '/';
+});
+
 fetchCategories();
 </script>
 

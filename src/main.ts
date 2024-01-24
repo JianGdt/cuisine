@@ -1,4 +1,3 @@
-
 import { createApp } from 'vue'
 import App from './App.vue'
 import './assets/sass/main.scss'
@@ -8,7 +7,7 @@ import 'element-plus/dist/index.css'
 import router from './route'
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component)
+  app.component(key, component)
 }
 app.use(ElementPlus)
 app.use(router)

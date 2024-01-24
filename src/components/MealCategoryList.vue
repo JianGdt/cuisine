@@ -6,11 +6,15 @@
         v-for="category in categories"
         :key="category.idCategory"
         @click="selectCategory(category.strCategory)"
-        :class="{ 'selected': category.strCategory === selectedCategory }"
-        class="p-4 m-4 bg-gray-100 rounded-lg shadow-md h-auto"
+        :class="{ selected: category.strCategory === selectedCategory }"
+        class="h-auto p-4 m-4 bg-gray-100 rounded-lg shadow-md"
       >
         <h3 class="text-lg font-bold text-black">{{ category.strCategory }}</h3>
-        <img :src="category.strCategoryThumb" :alt="category.strCategory" class="object-cover w-full cursor-pointer"/>
+        <img
+          :src="category.strCategoryThumb"
+          :alt="category.strCategory"
+          class="object-cover w-full cursor-pointer"
+        />
         <p class="text-black line-clamp-3">{{ category.strCategoryDescription }}</p>
       </li>
     </ul>
@@ -18,17 +22,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-const { categories } = defineProps(['categories']);
-console.log('categories', categories);
-const emit = defineEmits(['selectCategory']);
+import { ref } from 'vue'
+const { categories } = defineProps(['categories'])
+const emit = defineEmits(['selectCategory'])
 
-const selectedCategory = ref<string | null>(null);
+const selectedCategory = ref<string | null>(null)
 
 const selectCategory = (category: string) => {
-  selectedCategory.value = category;
-  emit('selectCategory', category);
-};
+  selectedCategory.value = category
+  emit('selectCategory', category)
+}
 </script>
 
 <style scoped lang="scss">

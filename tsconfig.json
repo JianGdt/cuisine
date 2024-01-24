@@ -9,6 +9,7 @@
     }
   ],
   "compilerOptions": {
+    "composite": true,
     "types": ["element-plus/global"],
     "target": "esnext", 
     "module": "esnext",

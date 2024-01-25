@@ -1,5 +1,6 @@
 <template>
   <main class="w-full">
+    <HomePage />
     <MealCategoryList v-if="isRootPath" :categories="categories" @selectCategory="selectCategory" />
     <router-view v-if="!isRootPath" :meals="meals" />
   </main>
@@ -9,6 +10,8 @@
 import { ref, watch } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import HomePage from '@/views/HomePage.vue'
+import MealCategoryList from '@/views/MealCategoryList.vue'
 
 const router = useRouter()
 

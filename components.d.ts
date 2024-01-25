@@ -8,10 +8,22 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BackButton: typeof import('./src/components/BackButton.vue')['default']
+    Cards: typeof import('./src/components/skeleton/Cards.vue')['default']
+    ElButton: typeof import('element-plus/es')['ElButton']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
+    ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
+    ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
+    HomePage: typeof import('./src/components/HomePage.vue')['default']
     MealCategoryList: typeof import('./src/components/MealCategoryList.vue')['default']
     MealList: typeof import('./src/components/MealList.vue')['default']
+    Recipes: typeof import('./src/components/modal/Recipes.vue')['default']
+    RecipesModal: typeof import('./src/components/modal/RecipesModal.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+  }
+  export interface ComponentCustomProperties {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
   }
 }

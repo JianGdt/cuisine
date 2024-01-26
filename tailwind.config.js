@@ -4,7 +4,9 @@ export default {
     extend: {
       colors: {
         'dark': '#121212',
+        'darkest': "#000",
         'light': '#52525b',
+        'main': '#FFFF'
       },
       backgroundColor: {
         'secondary': '#121212',

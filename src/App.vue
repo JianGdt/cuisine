@@ -1,65 +1,80 @@
 <template>
   <main class="w-full">
     <HomePage />
-    <MealCategoryList v-if="isHomePath" :categories="categories" @selectCategory="selectCategory" />
-    <router-view v-if="!isHomePath" :meals="meals" />
+    <MealCategoryList
+      v-if="isRoutePath"
+      :categories="categories"
+      @selectCategory="selectCategory"
+    />
+    <router-view v-else :meals="meals" />
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import axios from 'axios'
+import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import MealCategoryList from '@/views/MealCategoryList.vue'
+import { useFetch } from '@/composables/useFetch'
 
 const router = useRouter()
 
-const fetchCategories = () => {
-  const url = 'https://www.themealdb.com/api/json/v1/1/categories.php'
-  axios.get(url).then((response) => {
-    categories.value = response.data.categories
-  })
-}
+const categoriesUrl = 'https://www.themealdb.com/api/json/v1/1/categories.php'
+const mealsUrl = ref<string | null>(null)
 
-const searchMeals = (error: any) => {
-  if (!selectedCategory.value) {
-    error.value = 'Please select a category.'
-    return
-  }
+const { data: categoriesData, error: categoriesError } = useFetch(categoriesUrl)
+const { data: mealsData, error: mealsError } = useFetch(mealsUrl)
 
-  const url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${selectedCategory.value}`
-  axios
-    .get(url)
-    .then((response) => {
-      meals.value = response.data.meals
-      error.value = null
-    })
-    .catch((err) => {
-      err.value = 'Error fetching meals.'
-    })
-}
-
-const meals = ref([])
-const error = ref(null)
 const categories = ref([])
 const selectedCategory = ref<string | null>(null)
+const meals = ref([])
+const error = ref(null)
+const isRoutePath = ref(true)
 
-const selectCategory = (category: string) => {
-  selectedCategory.value = category
-  searchMeals(error)
-  router.push({ name: 'MealList', params: { category } })
-}
-
-const isHomePath = ref(true)
 watch(
   () => router.currentRoute.value.path,
   (path) => {
-    isHomePath.value = path === '/'
+    isRoutePath.value = path === '/'
   }
 )
 
-fetchCategories()
+const selectCategory = (category: string) => {
+  selectedCategory.value = category
+  meals.value = []
+  error.value = null
+  searchMeals(category)
+  router.push({ name: 'MealList', params: { category } })
+}
+
+const searchMeals = async (category: string) => {
+  if (!category) {
+    console.log('No category selected.')
+    return
+  }
+
+  mealsUrl.value = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`
+
+  await Promise.allSettled([mealsData, mealsError]).then(([data, err]) => {
+    if (data.status === 'fulfilled' && data.value) {
+      meals.value = data.value.meals
+      error.value = null
+    } else if (err.status === 'rejected') {
+      error.value = err.reason
+    }
+  })
+}
+
+onMounted(() => {
+  watch(categoriesData, () => {
+    if (categoriesData.value) {
+      categories.value = categoriesData.value.categories
+    }
+  })
+
+  watch(categoriesError, (err) => {
+    console.log(err)
+  })
+})
 </script>
 
 <style>

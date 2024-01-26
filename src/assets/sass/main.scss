@@ -3,8 +3,10 @@
 @tailwind utilities;
 
 @import './base.scss';
+@import './fonts.scss';
 
 #app {
   margin: 0 auto;
   font-weight: normal;
+  font-family: 'Quicksand', sans-serif;
 }

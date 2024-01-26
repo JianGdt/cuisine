@@ -14,9 +14,6 @@
             :alt="category.strCategory"
             class="object-cover cursor-pointer"
           />
-          <p class="text-sm leading-none text-black line-clamp-3">
-            {{ category.strCategoryDescription }}
-          </p>
         </li>
       </SwiperSlide>
     </Swiper>
@@ -24,14 +21,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
+import { useFetch } from '@/composables/useFetch'
 
-const { categories } = defineProps(['categories'])
+const { data: categoriesData, error: categoriesError } = useFetch(
+  'https://www.themealdb.com/api/json/v1/1/categories.php'
+)
+
+type Category = {
+  idCategory: string
+  strCategory: string
+  strCategoryThumb: string
+  strCategoryDescription: string
+}
+
+const categories = ref<Category[]>([])
+const selectedCategory = ref<string | null>(null)
 const emit = defineEmits(['selectCategory'])
 
-const selectedCategory = ref<string | null>(null)
+watch(categoriesData, () => {
+  if (categoriesData.value) {
+    categories.value = categoriesData.value.categories
+  }
+})
+
+watch(categoriesError, (err) => {
+  console.log(err)
+})
 
 const selectCategory = (category: string) => {
   selectedCategory.value = category
@@ -53,6 +71,7 @@ const swiperOptions = ref({
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 20px;
   .swiper-slide {
     text-align: center;
     font-size: 18px;

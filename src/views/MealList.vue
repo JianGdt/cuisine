@@ -19,6 +19,11 @@ import { ref, watch } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import MealItem from '@/components/MealItem.vue'
 import CardsSkeleton from '@/components/skeleton/CardsSkeleton.vue'
+import { useFetch } from '@/composables/useFetch'
+
+const props = defineProps({
+  category: String
+})
 
 type Meal = {
   idMeal: string
@@ -26,23 +31,25 @@ type Meal = {
   strMealThumb: string
 }
 
-const props = defineProps<{
-  meals: Meal[]
-}>()
+const categoryUrl = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${props.category}`
+const { data: mealsData, error: mealsError } = useFetch(categoryUrl)
 
-const meals = ref(props.meals)
+const meals = ref<Meal[]>([])
 const displayedMeals = ref<Meal[]>([])
 const searchQuery = ref('')
 const loading = ref(true)
 
-watch(
-  () => props.meals,
-  (newMeals) => {
-    meals.value = newMeals
+watch(mealsData, () => {
+  if (mealsData.value) {
+    meals.value = mealsData.value.meals
     displayedMeals.value = filterMeals()
     loading.value = false
   }
-)
+})
+
+watch(mealsError, () => {
+  loading.value = false
+})
 
 watch(
   () => searchQuery.value,

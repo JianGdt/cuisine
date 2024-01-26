@@ -1,36 +1,23 @@
 <template>
   <div class="p-12">
     <BackButton />
-    <h2>Results:</h2>
     <div v-if="loading">
       <CardsSkeleton />
     </div>
-    <div v-else>
-      <div v-if="displayedMeals.length === 0">No results found.</div>
-      <div>
-        <el-input v-model="searchQuery" @input="searchMealsByName" :prefix-icon="Search" />
-      </div>
-      <ul class="grid grid-cols-4 gap-x-6">
-        <li v-for="meal in displayedMeals" :key="meal.idMeal" class="relative flex flex-col">
-          <span class="text-dark">
-            {{ meal.strMeal }}
-          </span>
-          <img :src="meal.strMealThumb" :alt="meal.strMeal" class="object-cover w-full h-full" />
-          <router-link :to="{ name: 'MealDetails', params: { id: meal.idMeal } }">
-            <el-button type="primary" class="absolute bottom-0 left-[0%] z-20 cursor-pointer">
-              Explore the recipe
-              <el-icon><ArrowRightBold /></el-icon>
-            </el-button>
-          </router-link>
-        </li>
-      </ul>
+    <div v-else class="text-start">
+      <label class="text-dark"> Search by name: </label>
+      <el-input v-model="searchQuery" @input="searchMealsByName" :prefix-icon="Search" />
     </div>
+    <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6">
+      <MealItem v-for="meal in displayedMeals" :key="meal.idMeal" :meal="meal" />
+    </ul>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { Search } from '@element-plus/icons-vue'
+import MealItem from '@/components/MealItem.vue'
 import CardsSkeleton from '@/components/skeleton/CardsSkeleton.vue'
 
 type Meal = {

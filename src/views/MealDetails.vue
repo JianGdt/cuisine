@@ -3,9 +3,18 @@
     <BackButton />
     <h2>Meal Details:</h2>
     <div v-if="mealDetails">
-      <h3>{{ mealDetails.strMeal }}</h3>
-      <img :src="mealDetails.strMealThumb" :alt="mealDetails.strMeal" class="object-cover w-full" />
-      <div v-html="mealDetails.strInstructions"></div>
+      <h3 class="text-dark">{{ mealDetails.strMeal }}</h3>
+      <div class="flex flex-col justify-between text-center align-middle lg:flex-row gap-x-6">
+        <img
+          :src="mealDetails.strMealThumb"
+          :alt="mealDetails.strMeal"
+          class="object-cover w-auto h-auto"
+        />
+        <h4 class="my-4 text-4xl text-dark text-end">
+          Instructions:
+          <div v-html="mealDetails.strInstructions" class="text-sm text-dark text-start"></div>
+        </h4>
+      </div>
     </div>
   </div>
 </template>

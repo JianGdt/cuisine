@@ -1,8 +1,8 @@
 <template>
   <main class="w-full">
     <HomePage />
-    <MealCategoryList v-if="isRootPath" :categories="categories" @selectCategory="selectCategory" />
-    <router-view v-if="!isRootPath" :meals="meals" />
+    <MealCategoryList v-if="isHomePath" :categories="categories" @selectCategory="selectCategory" />
+    <router-view v-if="!isHomePath" :meals="meals" />
   </main>
 </template>
 
@@ -51,11 +51,11 @@ const selectCategory = (category: string) => {
   router.push({ name: 'MealList', params: { category } })
 }
 
-const isRootPath = ref(true)
+const isHomePath = ref(true)
 watch(
   () => router.currentRoute.value.path,
   (path) => {
-    isRootPath.value = path === '/'
+    isHomePath.value = path === '/'
   }
 )
 

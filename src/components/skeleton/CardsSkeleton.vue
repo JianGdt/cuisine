@@ -1,5 +1,12 @@
 <template>
-  <el-skeleton style="width: 240px" :loading="loading" animated :count="12" :throttle="500">
+  <el-skeleton
+    style="width: 240px"
+    :loading="loading"
+    animated
+    :count="12"
+    :throttle="500"
+    class="flex flex-col"
+  >
     <template #template>
       <el-skeleton-item variant="image" style="width: 240px; height: 240px" />
       <div style="padding: 14px">

@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
-import MealCategoryList from '@/views/MealCategoryList.vue'
+import MealArea from '@/views/MealArea.vue'
 import MealList from '@/views/MealList.vue'
 import MealDetails from '@/views/MealDetails.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'MealCategoryList',
-    component: MealCategoryList
+    name: 'MealArea',
+    component: MealArea
   },
   {
     path: '/meals/:category',

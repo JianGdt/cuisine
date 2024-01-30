@@ -1,13 +1,13 @@
 <template>
-  <li class="relative flex flex-col">
-    <span class="text-dark">{{ meal.strMeal }}</span>
+  <li class="flex flex-col p-2 bg-main">
+    <span class="p-2 text-sm text-start text-main">{{ meal.strMeal }}</span>
     <img :src="meal.strMealThumb" :alt="meal.strMeal" class="object-cover w-full h-full" />
-    <router-link :to="{ name: 'MealDetails', params: { id: meal.idMeal } }">
-      <el-button type="primary" class="absolute bottom-0 left-[0%] z-20 cursor-pointer">
-        Explore the recipe
-        <el-icon><ArrowRightBold /></el-icon>
-      </el-button>
-    </router-link>
+    <el-button type="info" class="left-[0%] z-20 cursor-pointer">
+      <router-link :to="{ name: 'MealDetails', params: { id: meal.idMeal } }" class="flex p-1">
+        View recipe
+        <el-icon class="icon-arrow"><ArrowRightBold /></el-icon>
+      </router-link>
+    </el-button>
   </li>
 </template>
 
@@ -27,5 +27,14 @@ const { meal } = defineProps({
 </script>
 
 <style scoped lang="scss">
-/* Add your styles here */
+.el-button {
+  position: relative;
+  margin: 5px 0;
+  &:hover {
+    .icon-arrow {
+      transform: translateX(10px);
+      transition: transform 0.3s ease-in-out;
+    }
+  }
+}
 </style>

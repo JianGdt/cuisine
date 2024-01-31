@@ -1,3 +1,5 @@
+// index.ts
+
 import { createStore } from 'vuex'
 import axios from 'axios'
 
@@ -26,16 +28,16 @@ export default createStore({
     isLoading: true
   } as State,
   mutations: {
-    SET_ACTIVE_NAME(state, activeName: string) {
+    setActiveName(state, activeName: string) {
       state.activeName = activeName
     },
-    SET_AREAS(state, areas: Area[]) {
+    setAreas(state, areas: Area[]) {
       state.areas = areas
     },
-    SET_FILTERED_MEALS(state, meals: Meal[]) {
+    setFilteredMeals(state, meals: Meal[]) {
       state.filteredMeals = meals
     },
-    SET_LOADING(state, loading: boolean) {
+    setIsLoading(state, loading: boolean) {
       state.isLoading = loading
     }
   },
@@ -43,25 +45,55 @@ export default createStore({
     async fetchAreas({ commit, dispatch }) {
       try {
         const response = await axios.get('https://www.themealdb.com/api/json/v1/1/list.php?a=list')
-        commit('SET_AREAS', response.data.meals)
+        commit('setAreas', response.data.meals)
         const activeName = response.data.meals.length > 0 ? response.data.meals[0].strArea : ''
-        commit('SET_ACTIVE_NAME', activeName)
+        commit('setActiveName', activeName)
         await dispatch('fetchMeals', activeName)
       } catch (error) {
         console.error('Error fetching areas:', error)
       }
     },
     async fetchMeals({ commit }, selectedArea: string) {
-      commit('SET_LOADING', true)
+      commit('setIsLoading', true)
       try {
         const response = await axios.get(
           `https://www.themealdb.com/api/json/v1/1/filter.php?a=${selectedArea}`
         )
-        commit('SET_FILTERED_MEALS', response.data.meals)
+        commit('setFilteredMeals', response.data.meals)
       } catch (error) {
         console.error('Error fetching meals:', error)
       } finally {
-        commit('SET_LOADING', false)
+        commit('setIsLoading', false)
+      }
+    },
+    async searchMeals({ commit }, searchQuery: string) {
+      commit('setIsLoading', true)
+      try {
+        const response = await axios.get(
+          `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
+        )
+        commit('setFilteredMeals', response.data.meals)
+      } catch (error) {
+        console.error('Error searching meals:', error)
+      } finally {
+        commit('setIsLoading', false)
+      }
+    },
+    async filterMealsByName({ commit, dispatch, state }, name) {
+      commit('setIsLoading', true)
+      try {
+        if (name.trim() === '') {
+          await dispatch('fetchMeals', state.activeName)
+        } else {
+          const filteredMeals = state.filteredMeals.filter((meal) =>
+            meal.strMeal.toLowerCase().includes(name)
+          )
+          commit('setFilteredMeals', filteredMeals)
+        }
+      } catch (error) {
+        console.error('Error filtering meals by name:', error)
+      } finally {
+        commit('setIsLoading', false)
       }
     }
   },

@@ -1,8 +1,8 @@
 <template>
   <main class="w-full">
-    <HomePage />
+    <HomePage v-if="isHomePath" />
     <MealArea v-if="isRoutePath" :areas="areas" @selectArea="selectArea" />
-    <router-view :meals="mealsUrl" />
+    <router-view v-else :meals="mealsUrl" />
   </main>
 </template>
 
@@ -21,6 +21,7 @@ const areas = ref<string[]>([])
 
 const { data: areasData, error: areasError } = useFetch(areasUrl)
 
+const isHomePath = ref(true)
 const isRoutePath = ref(false)
 
 const selectArea = (selectedArea: string) => {
@@ -30,7 +31,8 @@ const selectArea = (selectedArea: string) => {
 watch(
   () => router.currentRoute.value.path,
   (path) => {
-    isRoutePath.value = path === '/meals'
+    isHomePath.value = path === '/'
+    isRoutePath.value = path === '/' || path === '/meals'
 
     if (isRoutePath.value) {
       mealsUrl.value = areasUrl

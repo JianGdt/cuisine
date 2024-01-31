@@ -1,6 +1,6 @@
 <template>
   <figure>
-    <ArrowLeft class="w-6 h-6 cursor-pointer" @click="goBack" />
+    <ArrowLeft class="w-6 h-6 p-1 rounded-full cursor-pointer bg-light" @click="goBack" />
   </figure>
 </template>
 

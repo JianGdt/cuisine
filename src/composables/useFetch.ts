@@ -1,4 +1,3 @@
-// useFetch.ts
 import { ref } from 'vue'
 
 export function useFetch(url: string) {
@@ -19,7 +18,7 @@ export function useFetch(url: string) {
     }
   }
 
-  fetchData() // Automatically fetch data when the component is mounted
+  fetchData()
 
   return { data, error, isLoading, fetchData }
 }

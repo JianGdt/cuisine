@@ -13,13 +13,13 @@
         <CardsSkeleton />
       </div>
       <div v-else>
+        <SearchBar @search="handleSearch" />
         <div v-if="store.state.filteredMeals.length > 0">
-          <SearchBar @search="handleSearch" />
           <ul class="grid grid-cols-1 p-12 md:grid-cols-3 lg:grid-cols-4 gap-9">
             <MealItem v-for="meal in store.state.filteredMeals" :key="meal.idMeal" :meal="meal" />
           </ul>
         </div>
-        <div v-else>
+        <div v-else class="p-24">
           <p class="text-main">No meals found for the selected area.</p>
         </div>
       </div>
@@ -47,9 +47,16 @@ const handleSearch = (query: string) => {
   filterMeals()
 }
 
-const filterMeals = () => {
-  const filteredByName = searchQuery.value.trim().toLowerCase()
-  store.dispatch('filterMealsByName', filteredByName)
+const filterMeals = async () => {
+  store.commit('setIsLoading', true)
+  try {
+    const filteredByName = searchQuery.value.trim().toLowerCase()
+    await store.dispatch('filterMealsByName', filteredByName)
+  } catch (error) {
+    console.error('Error filtering meals:', error)
+  } finally {
+    store.commit('setIsLoading', false)
+  }
 }
 
 const onMounted = async () => {
@@ -61,14 +68,12 @@ watch(searchQuery, filterMeals)
 </script>
 
 <style lang="scss" scoped>
-.customTabs > .el-tabs__content {
-  padding: 32px;
-  color: #ffffff;
-  font-size: 32px;
-  font-weight: 600;
-}
-
-.el-skeleton {
-  margin-bottom: 20px;
+.customTabs :deep(.el-tabs__item) {
+  color: #aaaaaa;
+  font-weight: 300;
+  &.is-active {
+    color: #fffd;
+    font-weight: 600;
+  }
 }
 </style>

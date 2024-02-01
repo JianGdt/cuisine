@@ -1,17 +1,15 @@
-<!-- SearchBar.vue -->
 <template>
-  <div>
-    <el-input
+  <div class="pl-0 md:pl-12">
+    <input
       v-model="searchQuery"
       @input="emitSearchQuery"
-      placeholder="Search by name"
-      :prefix-icon="Search"
+      placeholder="Search by name..."
+      class="w-full md:w-[300px] justify-start items-start flex p-2 font-bold rounded-md outline-none placeholder-dark"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { Search } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 
 const searchQuery = ref('')

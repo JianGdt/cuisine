@@ -1,13 +1,13 @@
 <template>
   <div class="p-12">
     <BackButton />
-    <div v-if="mealDetails" class="shadow-md bg-darkest">
-      <h3 class="text-main">{{ mealDetails.strMeal }}</h3>
+    <div v-if="mealDetails" class="my-4 rounded-lg shadow-md bg-darkest">
+      <h3 class="p-12 text-main">{{ mealDetails.strMeal }}</h3>
       <div class="relative flex flex-col items-center justify-center">
         <img
           :src="mealDetails.strMealThumb"
           :alt="mealDetails.strMeal"
-          class="object-cover w-5/12 h-full cursor-pointer hover:opacity-80"
+          class="object-cover w-full h-full cursor-pointer md:w-5/12 rounded-xl hover:opacity-80"
           @mouseover="showPlayIcon = true"
           @mouseout="showPlayIcon = true"
         />
@@ -15,16 +15,18 @@
           v-if="mealDetails.strYoutube && showPlayIcon"
           class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
         >
-          <img
+          <!-- <img
             @click="playYouTube"
             :src="playIcon"
             alt="Play icon"
             class="w-12 h-12 cursor-pointer"
-          />
+          /> -->
         </div>
         <div class="p-12 font-bold text-light">
-          <h4 class="text-4xl text-light">Meal {{ displayType }}</h4>
-          <div class="flex items-center justify-center gap-x-12">
+          <h4 class="mb-4 text-lg md:text-4xl text-light">Meal {{ displayType }}</h4>
+          <div
+            class="flex items-center justify-center text-sm leading-4 md:text-lg gap-x-2 md:gap-x-12"
+          >
             <button
               @click="setDisplayType('Ingredients')"
               :class="{ 'active-button': displayType === 'Ingredients' }"
@@ -44,7 +46,7 @@
             <ul
               v-if="displayType === 'Ingredients'"
               key="ingredients"
-              class="grid max-w-2xl grid-cols-1 mx-auto my-4 md:grid-cols-3 text-light"
+              class="grid max-w-2xl grid-cols-1 gap-4 mx-auto my-4 md:grid-cols-3 text-light"
             >
               <li
                 v-for="ingredient in mealDetails.ingredients"
@@ -60,10 +62,12 @@
               key="instructions"
               class="my-4 text-start text-light"
             >
-              <ul class="max-w-2xl mx-auto text-main">
-                <li>
-                  <img :src="checkIcon" alt="check icon" class="inline-block w-[20px] h-full" />
-                  {{ mealDetails.strInstructions }}
+              <ul class="max-w-2xl mx-auto text-[12px] md:text-[15px] text-main">
+                <li
+                  v-for="(instruction, index) in mealDetails.strInstructions.split('\r\n')"
+                  :key="index"
+                >
+                  {{ instruction }}
                 </li>
               </ul>
             </div>
@@ -78,7 +82,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
-import playIcon from '@/assets/images/playIcon.svg'
+// import playIcon from '@/assets/images/playIcon.svg'
 import checkIcon from '@/assets/images/check.svg'
 
 type MealDetail = {
@@ -123,11 +127,9 @@ function setDisplayType(type: string): void {
   displayType.value = type
 }
 
-function playYouTube(): void {
-  // You can implement your logic to play the YouTube video here
-  // For example, open a modal with an embedded YouTube video player
-  console.log('Play YouTube video:', mealDetails.value?.strYoutube)
-}
+// function playYouTube(): void {
+//   console.log('Play YouTube video:', mealDetails.value?.strYoutube)
+// }
 </script>
 
 <style scoped lang="scss">
@@ -147,7 +149,7 @@ function playYouTube(): void {
 }
 
 img[w-12] {
-  width: 3rem; /* Adjust size as needed */
-  height: 3rem; /* Adjust size as needed */
+  width: 3rem;
+  height: 3rem;
 }
 </style>

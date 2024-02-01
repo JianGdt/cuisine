@@ -4,7 +4,7 @@
   >
     <div class="flex flex-col-reverse items-center px-4 md:flex-row overlay">
       <div class="text-start">
-        <h1 class="text-2xl font-bold md:text-4xl lg:text-6xl text-main">
+        <h1 class="text-2xl font-bold md:text-2.5xl lg:text-6xl text-main">
           The Easiest Way to Make Your Favorite Meal
         </h1>
         <p class="font-medium text-light">
@@ -12,7 +12,11 @@
           Help you to find the easiest way to cook.
         </p>
       </div>
-      <img :src="burgerBg" alt="Food background" class="h-auto drop-shadow-2xl" />
+      <img
+        :src="burgerBg"
+        alt="Food background"
+        class="h-auto w-[200px] lg:w-full drop-shadow-2xl"
+      />
     </div>
   </div>
 </template>

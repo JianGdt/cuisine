@@ -1,19 +1,18 @@
-// index.ts
-
 import { createStore } from 'vuex'
 import axios from 'axios'
+import { BASE_API_URL } from '@/api/constant'
 
-interface Area {
+type Area = {
   strArea: string
 }
 
-interface Meal {
+type Meal = {
   idMeal: string
   strMeal: string
   strMealThumb: string
 }
 
-interface State {
+type State = {
   activeName: string
   areas: Area[]
   filteredMeals: Meal[]
@@ -25,7 +24,7 @@ export default createStore({
     activeName: '',
     areas: [],
     filteredMeals: [],
-    isLoading: true
+    isLoading: false
   } as State,
   mutations: {
     setActiveName(state, activeName: string) {
@@ -44,7 +43,7 @@ export default createStore({
   actions: {
     async fetchAreas({ commit, dispatch }) {
       try {
-        const response = await axios.get('https://www.themealdb.com/api/json/v1/1/list.php?a=list')
+        const response = await axios.get(`${BASE_API_URL}/list.php?a=list`)
         commit('setAreas', response.data.meals)
         const activeName = response.data.meals.length > 0 ? response.data.meals[0].strArea : ''
         commit('setActiveName', activeName)
@@ -56,9 +55,7 @@ export default createStore({
     async fetchMeals({ commit }, selectedArea: string) {
       commit('setIsLoading', true)
       try {
-        const response = await axios.get(
-          `https://www.themealdb.com/api/json/v1/1/filter.php?a=${selectedArea}`
-        )
+        const response = await axios.get(`${BASE_API_URL}/filter.php?a=${selectedArea}`)
         commit('setFilteredMeals', response.data.meals)
       } catch (error) {
         console.error('Error fetching meals:', error)
@@ -69,9 +66,7 @@ export default createStore({
     async searchMeals({ commit }, searchQuery: string) {
       commit('setIsLoading', true)
       try {
-        const response = await axios.get(
-          `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
-        )
+        const response = await axios.get(`${BASE_API_URL}/search.php?s=${searchQuery}`)
         commit('setFilteredMeals', response.data.meals)
       } catch (error) {
         console.error('Error searching meals:', error)

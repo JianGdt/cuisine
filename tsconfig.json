@@ -11,5 +11,5 @@
     "esModuleInterop": true,
     "lib": ["dom", "esnext", "es2015.promise"],
   },
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/composables/**/*.ts", "src/**/*.ts", ],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/composables/**/*.ts", "src/**/*.ts",  "src/**/*.ts" ],
 }

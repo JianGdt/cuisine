@@ -4,18 +4,19 @@
   >
     <div class="flex flex-col-reverse items-center px-4 md:flex-row overlay">
       <div class="text-start">
-        <h1 class="text-2xl font-bold md:text-2.5xl lg:text-6xl text-main">
+        <h1 class="text-2xl font-bold md:text-2.5xl lg:text-3xl text-main">
           The Easiest Way to Make Your Favorite Meal
         </h1>
-        <p class="font-medium text-light">
-          Discover 1000+ recipes in your hand with the <span class="font-bold"> Best recipe. </span>
+        <p class="font-medium text-gray-200">
+          Discover 1000+ recipes in your hand with the
+          <span class="font-bold text-main"> Best recipe. </span>
           Help you to find the easiest way to cook.
         </p>
       </div>
       <img
         :src="burgerBg"
         alt="Food background"
-        class="h-auto w-[200px] lg:w-full drop-shadow-2xl"
+        class="h-auto w-[200px] lg:w-[300px] xl:w-full drop-shadow-2xl"
       />
     </div>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <li class="flex flex-col p-2 bg-main">
+  <li class="flex flex-col w-[300px] md:w-full p-2 bg-main justify-center mx-auto">
     <span class="p-2 text-sm text-start text-main">{{ meal.strMeal }}</span>
     <img :src="meal.strMealThumb" :alt="meal.strMeal" class="object-cover w-full h-full" />
     <el-button type="info" class="left-[0%] z-20 cursor-pointer">

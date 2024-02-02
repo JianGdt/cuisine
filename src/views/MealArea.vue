@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-4xl text-main text-start">Best Recipes</h1>
+    <h1 class="pl-12 text-lg md:text-2xl lg:text-4xl text-main text-start">Best Recipes</h1>
   </div>
   <el-tabs v-model="store.state.activeName" class="customTabs" @tab-click="handleClick">
     <el-tab-pane
@@ -38,8 +38,12 @@ import SearchBar from '@/views/SearchBar.vue'
 const store = useStore()
 const searchQuery = ref('')
 
+defineProps(['areas'])
+const emit = defineEmits(['selectArea'])
+
 const handleClick = (tab: TabsPaneContext) => {
   store.dispatch('fetchMeals', tab.paneName as string)
+  emit('selectArea', tab.paneName)
 }
 
 const handleSearch = (query: string) => {

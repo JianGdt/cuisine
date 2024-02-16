@@ -6,23 +6,29 @@
         <CardsSkeleton />
       </div>
       <div v-else>
-        <h3 class="p-12 text-main">{{ mealDetails?.strMeal }}</h3>
-        <div class="flex flex-col items-center justify-center">
-          <img
-            :src="mealDetails?.strMealThumb"
-            :alt="mealDetails?.strMeal"
-            class="relative object-cover w-full h-full cursor-pointer md:w-5/12 rounded-xl hover:opacity-50"
-            @mouseover="showPlayIcon = true"
-            @mouseout="showPlayIcon = false"
-          />
-          <div v-if="mealDetails?.strYoutube && showPlayIcon" class="playIconContainer">
+        <div class="relative flex flex-col items-center justify-center">
+          <div class="relative">
+            <h3
+              class="absolute px-6 md:px-0 text-[30px] bottom-6 md:text-6xl text-main bg-dark rounded-lg"
+            >
+              {{ mealDetails?.strMeal }}
+            </h3>
             <img
-              @click="playYouTube"
-              :src="playIcon"
-              @mousemove="showPlayIcon = true"
-              alt="Play icon"
-              class="w-12 h-12 cursor-pointer"
+              :src="mealDetails?.strMealThumb"
+              :alt="mealDetails?.strMeal"
+              class="w-full px-6 my-12 md:px-0 rounded-xl"
             />
+            <div
+              v-if="mealDetails?.strYoutube"
+              class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+            >
+              <img
+                @click="playYouTube"
+                :src="playIcon"
+                alt="Play icon"
+                class="w-12 h-12 cursor-pointer"
+              />
+            </div>
           </div>
           <div class="p-12 font-bold text-light">
             <h4 class="mb-4 text-lg text-center md:text-4xl text-light">
@@ -43,12 +49,12 @@
               <ul
                 v-if="mealDetailsType === 'Ingredients'"
                 key="ingredients"
-                class="grid max-w-2xl grid-cols-1 gap-4 mx-auto my-4 md:grid-cols-3 text-light"
+                class="grid grid-cols-1 gap-4 m-auto my-4 md:grid-cols-2 text-light"
               >
                 <li
                   v-for="ingredient in mealDetails?.ingredients"
                   :key="ingredient.ingredient"
-                  class="text-start text-main"
+                  class="text-start leaning-none text-main"
                 >
                   <img :src="checkIcon" alt="check icon" class="inline-block w-[20px] h-full" />
                   {{ `${ingredient.ingredient} - ${ingredient.measure}` }}
@@ -96,7 +102,6 @@ type MealDetail = {
 const mealDetails = ref<MealDetail | null>(null)
 const route = useRoute()
 const mealDetailsType = ref<string>('Ingredients')
-const showPlayIcon = ref(false)
 const loading = ref(false)
 
 onMounted(async () => {
@@ -143,12 +148,5 @@ function playYouTube(): void {
 img[w-12] {
   width: 3rem;
   height: 3rem;
-}
-
-.playIconContainer {
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 </style>

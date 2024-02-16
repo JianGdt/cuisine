@@ -45,7 +45,7 @@ export default createStore({
       try {
         const response = await axios.get(`${BASE_API_URL}/list.php?a=list`)
         commit('setAreas', response.data.meals)
-        const activeName = response.data.meals.length > 0 ? response.data.meals[0].strArea : ''
+        const activeName = response.data.meals[0].strArea
         commit('setActiveName', activeName)
         await dispatch('fetchMeals', activeName)
       } catch (error) {
@@ -63,10 +63,10 @@ export default createStore({
         commit('setIsLoading', false)
       }
     },
-    async searchMeals({ commit }, searchQuery: string) {
+    async searchMeals({ commit }, searchMealsByName: string) {
       commit('setIsLoading', true)
       try {
-        const response = await axios.get(`${BASE_API_URL}/search.php?s=${searchQuery}`)
+        const response = await axios.get(`${BASE_API_URL}/search.php?s=${searchMealsByName}`)
         commit('setFilteredMeals', response.data.meals)
       } catch (error) {
         console.error('Error searching meals:', error)
